@@ -1,0 +1,11 @@
+postgres: 
+  enabled: true
+  db_user: postgres
+  db_password: postgrespassword
+db_url: postgresql://postgres:postgrespassword@postgresql
+langfuse:
+  enabled: false
+phoenix:
+  enabled: true
+litellm_master_key: "sk-1235"
+litellm_model_list: []

@@ -1,0 +1,46 @@
+postgresql:
+  deploy: false
+minio:
+  deploy: false
+clickhouse:
+  replicaCount: 1
+  resourcesPreset: large
+  zookeeper:
+    replicaCount: 1
+langfuse:
+  nextauth:
+    url: http://langfuse-web.dev.svc.cluster.local:3000
+    secret: llmstack
+  telemetryEnabled: false
+  additionalEnv:
+    - name: DATABASE_URL
+      value: {{ .Values.db_url }}/{{ .Namespace }}_langfuse
+    # REDIS
+    - name: "REDIS_CONNECTION_STRING"
+      value: "redis://default:changeme@langfuse-valkey-primary:6379/0"
+    # CLICKHOUSE
+    - name: CLICKHOUSE_CLUSTER_ENABLED
+      value: "false"
+    - name: "CLICKHOUSE_MIGRATION_URL"
+      value: "clickhouse://langfuse-clickhouse:9000"
+    - name: "CLICKHOUSE_URL"
+      value: "http://langfuse-clickhouse:8123"
+    - name: "CLICKHOUSE_USER"
+      value: "default"
+    - name: "CLICKHOUSE_PASSWORD"
+      value: "changeme"
+    # S3 / MinIO
+    - name: "LANGFUSE_S3_EVENT_UPLOAD_ENABLED"
+      value: "true"
+    - name: "LANGFUSE_S3_EVENT_UPLOAD_BUCKET"
+      value: "langfuse"
+    - name: "LANGFUSE_S3_EVENT_UPLOAD_REGION"
+      value: "auto"
+    - name: "LANGFUSE_S3_EVENT_UPLOAD_ACCESS_KEY_ID"
+      value: "langfuse-access"
+    - name: "LANGFUSE_S3_EVENT_UPLOAD_SECRET_ACCESS_KEY"
+      value: "langfuse-secret"
+    - name: "LANGFUSE_S3_EVENT_UPLOAD_ENDPOINT"
+      value: "http://minio:9000"
+    - name: "LANGFUSE_S3_EVENT_UPLOAD_FORCE_PATH_STYLE"
+      value: "true"

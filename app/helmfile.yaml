@@ -1,0 +1,95 @@
+environments:
+  default:
+    values:
+    - ./config/default.yaml
+    - ./config/{{.Namespace}}.yaml
+
+---
+repositories:
+  - name: openwebui
+    url: https://helm.openwebui.com/
+
+  - name: litellm
+    url: oci://ghcr.io/berriai/litellm-helm
+    oci: true
+
+  - name: langfuse
+    url: https://langfuse.github.io/langfuse-k8s
+    oci: false
+
+  - name: homepage
+    url: https://jameswynn.github.io/helm-charts
+
+  - name: ingress-nginx
+    url: https://kubernetes.github.io/ingress-nginx
+
+releases:
+  - name: postgresql
+    chart: oci://registry-1.docker.io/bitnamicharts/postgresql
+    version: 16.4.7
+    namespace: {{ .Namespace }}
+    condition: postgres.enabled
+    values:
+      - fullNameOverride: "postgresql"
+        auth:
+          username: {{ .Values.postgres.db_user }}
+          password: {{ .Values.postgres.db_password }}
+        primary:
+          initdb:
+            scripts:
+              init.sql: |
+                CREATE DATABASE {{ .Namespace }}_openwebui;
+
+  - name: openwebui
+    chart: openwebui/open-webui
+    namespace: {{ .Namespace }}
+    values:
+      - ollama:
+          enabled: false
+        openaiBaseApiUrl: "http://litellm:4000"
+        extraEnvVars:
+          - name: DATABASE_URL
+            value: {{ .Values.db_url }}/{{ .Namespace }}_openwebui
+  
+  - name: litellm
+    chart: oci://ghcr.io/berriai/litellm-helm
+    version: 0.1.614
+    namespace: {{ .Namespace }}
+    values:
+      - envVars:
+          DATABASE_URL: {{ .Values.db_url }}/{{ .Namespace }}_litellm
+        db:
+          deployStandalone: false
+          useExisting: false
+        proxy_config:
+          model_list: {{ toYaml .Values.litellm_model_list | nindent 10}}
+          general_settings:
+            master_key: {{ .Values.litellm_master_key }}
+
+  - name: langfuse
+    chart: langfuse/langfuse
+    version: 0.12.1
+    namespace: {{ .Namespace }}
+    condition: langfuse.enabled
+    values:
+      - ./config/langfuse.yaml.gotmpl
+
+  - name: phoenix
+    chart: ./phoneix
+    namespace: {{ .Namespace }}
+    hooks: 
+    - events: [ "postsync"]
+      showlogs: true
+      command: "kubectl"
+      args: ["set", "env", "statefulset/phoenix", "PHOENIX_SQL_DATABASE_URL={{ .Values.db_url }}/{{ .Namespace }}_phoneix"]
+
+  - name: homepage
+    chart: homepage/homepage
+    values:
+    - ./config/homepage.yaml.gotmpl
+
+  - name: nginx
+    chart: ingress-nginx/ingress-nginx
+    values:
+    - config/ingress-nginx.gotmpl
+

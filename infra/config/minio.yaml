@@ -1,0 +1,20 @@
+rootUser: rootuser
+rootPassword: rootpass123
+replicas: 1
+mode: standalone
+buckets:
+  - name: loki-chunks
+  - name: loki-ruler
+  - name: loki-admin
+users:
+  - accessKey: loki-access
+    secretKey: loki-secret
+    policy: readwrite
+  - accessKey: langfuse-access
+    secretKey: langfuse-secret
+    policy: readwrite
+resources:
+  requests:
+    memory: 1Gi
+persistence:
+  size: 5Gi

@@ -1,0 +1,28 @@
+config:
+  bookmarks: []
+  services:
+    - {{ .Namespace }}:
+        - Open WebUI:
+            href: http://open-webui.{{ .Namespace }}.svc.cluster.local/
+            description: Open WebUI is an extensible, self-hosted AI interface that adapts to your workflow, all while operating entirely offline
+
+        - LiteLLM:
+            href: http://litellm.{{ .Namespace }}.svc.cluster.local:4000/ui
+            description: LLM Gateway to provide AI model access.
+
+        - Langfuse:
+            href: http://langfuse-web.{{ .Namespace }}.svc.cluster.local:3000/
+            description: Traces, evals, prompt management and metrics to debug and improve your LLM application.
+  widgets: []
+
+  kubernetes:
+    mode: cluster
+  settings:
+
+# The service account is necessary to allow discovery of other services
+serviceAccount:
+  create: true
+  name: homepage
+
+# This enables the service account to access the necessary resources
+enableRbac: true
