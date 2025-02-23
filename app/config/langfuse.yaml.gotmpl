@@ -1,8 +1,12 @@
+image:
+  pullPolicy: IfNotPresent
 postgresql:
   deploy: false
 minio:
   deploy: false
 clickhouse:
+  image:
+    pullPolicy: IfNotPresent
   replicaCount: 1
   resourcesPreset: large
   zookeeper:
@@ -13,6 +17,19 @@ langfuse:
     secret: llmstack
   telemetryEnabled: false
   additionalEnv:
+    - name: LANGFUSE_INIT_ORG_ID
+      value: "1"
+    - name: LANGFUSE_INIT_PROJECT_ID
+      value: "1"
+    - name: LANGFUSE_INIT_PROJECT_PUBLIC_KEY
+      value: {{ .Values.langfuse.public_key }}
+    - name: LANGFUSE_INIT_PROJECT_SECRET_KEY
+      value: {{ .Values.langfuse.secret_key }}
+    - name: LANGFUSE_INIT_USER_EMAIL
+      value: openwebui@local.com
+    - name: LANGFUSE_INIT_USER_PASSWORD
+      value: "vI2%mAz~8nsFYgm"
+
     - name: DATABASE_URL
       value: {{ .Values.db_url }}/{{ .Namespace }}_langfuse
     # REDIS
@@ -41,6 +58,6 @@ langfuse:
     - name: "LANGFUSE_S3_EVENT_UPLOAD_SECRET_ACCESS_KEY"
       value: "langfuse-secret"
     - name: "LANGFUSE_S3_EVENT_UPLOAD_ENDPOINT"
-      value: "http://minio:9000"
+      value: "http://minio.dkube.svc.cluster.local:9000"
     - name: "LANGFUSE_S3_EVENT_UPLOAD_FORCE_PATH_STYLE"
       value: "true"

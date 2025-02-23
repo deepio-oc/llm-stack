@@ -6,6 +6,7 @@ buckets:
   - name: loki-chunks
   - name: loki-ruler
   - name: loki-admin
+  - name: langfuse
 users:
   - accessKey: loki-access
     secretKey: loki-secret

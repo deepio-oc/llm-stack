@@ -23,6 +23,9 @@ repositories:
   - name: ingress-nginx
     url: https://kubernetes.github.io/ingress-nginx
 
+  - name: runix
+    url: https://helm.runix.net
+
 releases:
   - name: postgresql
     chart: oci://registry-1.docker.io/bitnamicharts/postgresql
@@ -39,6 +42,27 @@ releases:
             scripts:
               init.sql: |
                 CREATE DATABASE {{ .Namespace }}_openwebui;
+                CREATE DATABASE {{ .Namespace }}_phoneix;
+
+  - name: pgadmin
+    chart: runix/pgadmin4
+    namespace: {{ .Namespace }}
+    condition: postgres.enabled
+    values:
+    - pgadmin4:
+      env:
+        email: admin@local.com
+        password: {{ .Values.postgres.db_password }}
+      serverDefinitions:
+        enabled: true
+        servers:
+          DevServer:
+            Name: Local
+            Group: "Servers"
+            Port: 5432 
+            Username: {{ .Values.postgres.db_user }}
+            Host: "postgresql"
+            MaintenanceDB: "postgres"
 
   - name: openwebui
     chart: openwebui/open-webui
@@ -50,6 +74,13 @@ releases:
         extraEnvVars:
           - name: DATABASE_URL
             value: {{ .Values.db_url }}/{{ .Namespace }}_openwebui
+          - name: OPENAI_API_KEYS
+            value: fake;{{ .Values.litellm_master_key }}
+        image:
+          pullPolicy: IfNotPresent
+        pipelines:
+          image:
+            pullPolicy: IfNotPresent
   
   - name: litellm
     chart: oci://ghcr.io/berriai/litellm-helm
@@ -58,13 +89,25 @@ releases:
     values:
       - envVars:
           DATABASE_URL: {{ .Values.db_url }}/{{ .Namespace }}_litellm
+          LANGFUSE_PUBLIC_KEY: {{.Values.langfuse.public_key}}
+          LANGFUSE_SECRET_KEY: {{.Values.langfuse.secret_key}}
+          LANGFUSE_HOST: langfuse-web:3000
+        image:
+          pullPolicy: IfNotPresent
+        migrationJob:
+          enabled: false
         db:
           deployStandalone: false
           useExisting: false
         proxy_config:
           model_list: {{ toYaml .Values.litellm_model_list | nindent 10}}
+          litellm_settings:
+            callbacks: ["langfuse"]
           general_settings:
             master_key: {{ .Values.litellm_master_key }}
+          environment_variables:
+            PHOENIX_COLLECTOR_ENDPOINT: phoenix:4317
+            PHOENIX_COLLECTOR_HTTP_ENDPOINT: phoneix:6006
 
   - name: langfuse
     chart: langfuse/langfuse
@@ -77,11 +120,18 @@ releases:
   - name: phoenix
     chart: ./phoneix
     namespace: {{ .Namespace }}
-    hooks: 
-    - events: [ "postsync"]
-      showlogs: true
-      command: "kubectl"
-      args: ["set", "env", "statefulset/phoenix", "PHOENIX_SQL_DATABASE_URL={{ .Values.db_url }}/{{ .Namespace }}_phoneix"]
+    condition: phoenix.enabled
+    jsonPatches:
+    - target:
+        kind: StatefulSet
+        name: phoenix
+        namespace: {{ .Namespace }}
+      patch:
+        - op: add
+          path: "/spec/template/spec/containers/0/env/-"
+          value:
+            name: PHOENIX_SQL_DATABASE_URL
+            value: {{ .Values.db_url }}/{{ .Namespace }}_phoneix
 
   - name: homepage
     chart: homepage/homepage

@@ -4,8 +4,10 @@ postgres:
   db_password: postgrespassword
 db_url: postgresql://postgres:postgrespassword@postgresql
 langfuse:
-  enabled: false
-phoenix:
   enabled: true
+  secret_key: lf_sk_x1234567890
+  public_key: lf_pk_x1234567890
+phoenix:
+  enabled: false
 litellm_master_key: "sk-1235"
 litellm_model_list: []
