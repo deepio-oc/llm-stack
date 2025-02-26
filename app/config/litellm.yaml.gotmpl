@@ -13,12 +13,12 @@ db:
 proxy_config:
     model_list: {{ toYaml .Values.litellm_model_list | nindent 10}}
     litellm_settings:
-    callbacks: ["langfuse"]
+        callbacks: ["langfuse"]
     general_settings:
-    master_key: {{ .Values.litellm_master_key }}
+        master_key: {{ .Values.litellm_master_key }}
     environment_variables:
-    PHOENIX_COLLECTOR_ENDPOINT: phoenix:4317
-    PHOENIX_COLLECTOR_HTTP_ENDPOINT: phoneix:6006
+        PHOENIX_COLLECTOR_ENDPOINT: phoenix:4317
+        PHOENIX_COLLECTOR_HTTP_ENDPOINT: phoneix:6006
 ingress:
   hosts: 
   - host: litellm.{{ .Values.domain }}
