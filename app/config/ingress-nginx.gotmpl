@@ -1,5 +1,10 @@
+fullnameOverride: {{ .Namespace }}-nginx
 controller:
   ingressClassResource:
+    enabled: true
+    name: {{ .Namespace }}
     ingressClass: {{ .Namespace }}
+    controllerValue: k8s.io/ingress-nginx-{{ .Namespace }}
   ingressClass: {{ .Namespace }}
+  ingressClassByName: true
   

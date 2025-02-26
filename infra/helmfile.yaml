@@ -38,3 +38,15 @@ releases:
         enabled: false
       alertmanager:
         enabled: false
+- name: external-dns
+  chart: oci://registry-1.docker.io/bitnamicharts/external-dns
+  version: 8.7.5
+  values:
+  - sources:
+    - ingress
+    provider: cloudflare
+    domainFilters: ["dkube.ai"]
+    policy: sync
+    cloudflare:
+      apiToken: {{ requiredEnv "CF_API_TOKEN" }}
+      proxied: false

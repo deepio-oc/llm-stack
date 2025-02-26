@@ -3,3 +3,4 @@ litellm_model_list:
     litellm_params:
       model: ollama_chat/deepseek-r1:32b
       api_base: "http://host.docker.internal:11434"
+domain: demo1.internal.dkube.ai

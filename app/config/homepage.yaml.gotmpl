@@ -3,15 +3,15 @@ config:
   services:
     - {{ .Namespace }}:
         - Open WebUI:
-            href: http://open-webui.{{ .Namespace }}.svc.cluster.local/
+            href: http://openwebui.{{.Values.domain}}/
             description: Open WebUI is an extensible, self-hosted AI interface that adapts to your workflow, all while operating entirely offline
 
         - LiteLLM:
-            href: http://litellm.{{ .Namespace }}.svc.cluster.local:4000/ui
+            href: http://litellm.{{.Values.domain}}/ui
             description: LLM Gateway to provide AI model access.
 
         - Langfuse:
-            href: http://langfuse-web.{{ .Namespace }}.svc.cluster.local:3000/
+            href: http://langfuse.{{.Values.domain}}/
             description: Traces, evals, prompt management and metrics to debug and improve your LLM application.
   widgets: []
 
@@ -26,3 +26,12 @@ serviceAccount:
 
 # This enables the service account to access the necessary resources
 enableRbac: true
+ingress:
+  main:
+    hosts: 
+    - host: {{ .Values.domain }}
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+    enabled: true
+    ingressClassName: {{ .Namespace }}

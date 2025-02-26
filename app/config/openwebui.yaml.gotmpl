@@ -1,0 +1,17 @@
+ollama:
+  enabled: false
+openaiBaseApiUrl: "http://litellm:4000"
+extraEnvVars:
+  - name: DATABASE_URL
+    value: {{ .Values.db_url }}/{{ .Namespace }}_openwebui
+  - name: OPENAI_API_KEYS
+    value: fake;{{ .Values.litellm_master_key }}
+image:
+  pullPolicy: IfNotPresent
+pipelines:
+  image:
+    pullPolicy: IfNotPresent
+ingress:
+  host: openwebui.{{ .Values.domain }}
+  enabled: true
+  class: {{ .Namespace }}

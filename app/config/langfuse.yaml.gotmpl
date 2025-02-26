@@ -11,6 +11,14 @@ clickhouse:
   resourcesPreset: large
   zookeeper:
     replicaCount: 1
+ingress:
+  hosts: 
+  - host: langfuse.{{ .Values.domain }}
+    paths:
+      - path: /
+        pathType: ImplementationSpecific
+  enabled: true
+  className: {{ .Namespace }}
 langfuse:
   nextauth:
     url: http://langfuse-web.dev.svc.cluster.local:3000

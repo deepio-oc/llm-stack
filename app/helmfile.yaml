@@ -68,46 +68,14 @@ releases:
     chart: openwebui/open-webui
     namespace: {{ .Namespace }}
     values:
-      - ollama:
-          enabled: false
-        openaiBaseApiUrl: "http://litellm:4000"
-        extraEnvVars:
-          - name: DATABASE_URL
-            value: {{ .Values.db_url }}/{{ .Namespace }}_openwebui
-          - name: OPENAI_API_KEYS
-            value: fake;{{ .Values.litellm_master_key }}
-        image:
-          pullPolicy: IfNotPresent
-        pipelines:
-          image:
-            pullPolicy: IfNotPresent
+    - ./config/openwebui.yaml.gotmpl
   
   - name: litellm
     chart: oci://ghcr.io/berriai/litellm-helm
     version: 0.1.614
     namespace: {{ .Namespace }}
     values:
-      - envVars:
-          DATABASE_URL: {{ .Values.db_url }}/{{ .Namespace }}_litellm
-          LANGFUSE_PUBLIC_KEY: {{.Values.langfuse.public_key}}
-          LANGFUSE_SECRET_KEY: {{.Values.langfuse.secret_key}}
-          LANGFUSE_HOST: langfuse-web:3000
-        image:
-          pullPolicy: IfNotPresent
-        migrationJob:
-          enabled: false
-        db:
-          deployStandalone: false
-          useExisting: false
-        proxy_config:
-          model_list: {{ toYaml .Values.litellm_model_list | nindent 10}}
-          litellm_settings:
-            callbacks: ["langfuse"]
-          general_settings:
-            master_key: {{ .Values.litellm_master_key }}
-          environment_variables:
-            PHOENIX_COLLECTOR_ENDPOINT: phoenix:4317
-            PHOENIX_COLLECTOR_HTTP_ENDPOINT: phoneix:6006
+    - ./config/litellm.yaml.gotmpl
 
   - name: langfuse
     chart: langfuse/langfuse
