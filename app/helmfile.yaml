@@ -85,22 +85,6 @@ releases:
     values:
       - ./config/langfuse.yaml.gotmpl
 
-  - name: phoenix
-    chart: ./phoneix
-    namespace: {{ .Namespace }}
-    condition: phoenix.enabled
-    jsonPatches:
-    - target:
-        kind: StatefulSet
-        name: phoenix
-        namespace: {{ .Namespace }}
-      patch:
-        - op: add
-          path: "/spec/template/spec/containers/0/env/-"
-          value:
-            name: PHOENIX_SQL_DATABASE_URL
-            value: {{ .Values.db_url }}/{{ .Namespace }}_phoneix
-
   - name: homepage
     chart: homepage/homepage
     values:

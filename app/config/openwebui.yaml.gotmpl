@@ -12,8 +12,8 @@ extraEnvVars:
     value: {{ env "PGVECTOR_DB_URL" }}
 image:
   pullPolicy: IfNotPresent
-  repository: ghcr.io/open-webui/open-webui
-  tag: {{.Values.openwebui.image}}
+  repository: {{.Values.openwebui.image}}
+  tag: {{.Values.openwebui.tag}}
 pipelines:
   image:
     pullPolicy: IfNotPresent
