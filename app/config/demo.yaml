@@ -6,7 +6,7 @@ litellm_model_list:
       api_key: sk-fake
 domain: demo1.vmware.dkube.ai
 imagePullSecrets:
-  - registry-secret
+- name: registry-secret
 openwebui:
   image: env169-harbor.pse.lab/dkubetest/open-webui-gpu
   tag: "latest"
