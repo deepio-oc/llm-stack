@@ -17,9 +17,6 @@ proxy_config:
         callbacks: ["langfuse"]
     general_settings:
         master_key: {{ .Values.litellm_master_key }}
-    environment_variables:
-        PHOENIX_COLLECTOR_ENDPOINT: phoenix:4317
-        PHOENIX_COLLECTOR_HTTP_ENDPOINT: phoneix:6006
 ingress:
   hosts: 
   - host: litellm.{{ .Values.domain }}

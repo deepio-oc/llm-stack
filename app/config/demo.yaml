@@ -1,9 +1,14 @@
 litellm_model_list:
   - model_name: llama-3.1-8b-instruct
     litellm_params:
-      model: openai/meta/llama-3.1-8b-instruct
+      model: nvidia_nim/meta/llama-3.1-8b-instruct
       api_base: "http://dkube-nim-llm-sts.nim:8000/v1"
       api_key: sk-fake
+  - litellm_params:
+      api_base: http://nemo-embedder-text-embedding-nim.deploy:8000/v1
+      api_key: sk-fake
+      model: nvidia_nim/nvidia/nv-embedqa-e5-v5
+    model_name: nvidia/nv-embedqa-e5-v5
 domain: demo1.vmware.dkube.ai
 imagePullSecrets:
 - name: registry-secret
