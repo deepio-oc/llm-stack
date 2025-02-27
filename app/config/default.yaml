@@ -16,3 +16,4 @@ openwebui:
   image: ghcr.io/open-webui/open-webui
   tag: ""
   vector_db: chroma
+  size: 2Gi

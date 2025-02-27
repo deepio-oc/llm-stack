@@ -1,6 +1,8 @@
 ollama:
   enabled: false
 openaiBaseApiUrl: "http://litellm:4000"
+persistence:
+  size: {{.Values.openwebui.size}}
 extraEnvVars:
   - name: DATABASE_URL
     value: {{ .Values.db_url }}/{{ .Namespace }}_openwebui

@@ -7,12 +7,10 @@ litellm_model_list:
   - litellm_params:
       api_base: http://nemo-embedder-text-embedding-nim.deploy:8000/v1
       api_key: sk-fake
-      model: nvidia_nim/nvidia/nv-embedqa-e5-v5
+      model: nvidia_nim/nvidia/nv-embedqa-e5-v5-passage
     model_name: nvidia/nv-embedqa-e5-v5
 domain: demo1.vmware.dkube.ai
-imagePullSecrets:
-- name: registry-secret
 openwebui:
-  image: env169-harbor.pse.lab/dkubetest/open-webui-gpu
-  tag: "latest"
+  tag: v0.5.16-cuda
   vector_db: pgvector
+  size: 10Gi
