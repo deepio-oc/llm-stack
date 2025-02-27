@@ -6,8 +6,14 @@ extraEnvVars:
     value: {{ .Values.db_url }}/{{ .Namespace }}_openwebui
   - name: OPENAI_API_KEYS
     value: fake;{{ .Values.litellm_master_key }}
+  - name: VECTOR_DB
+    value: {{.Values.openwebui.vector_db}}
+  - name: PGVECTOR_DB_URL
+    value: {{ env "PGVECTOR_DB_URL" }}
 image:
   pullPolicy: IfNotPresent
+  repository: ghcr.io/open-webui/open-webui
+  tag: {{.Values.openwebui.image}}
 pipelines:
   image:
     pullPolicy: IfNotPresent
@@ -15,3 +21,4 @@ ingress:
   host: openwebui.{{ .Values.domain }}
   enabled: true
   class: {{ .Namespace }}
+imagePullSecrets: {{ .Values.imagePullSecrets }}

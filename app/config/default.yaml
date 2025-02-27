@@ -11,3 +11,8 @@ phoenix:
   enabled: false
 litellm_master_key: "sk-1235"
 litellm_model_list: []
+imagePullSecrets: []
+openwebui:
+  image: ghcr.io/open-webui/open-webui
+  tag: ""
+  vector_db: chroma

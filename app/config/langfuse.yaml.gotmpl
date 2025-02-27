@@ -21,7 +21,7 @@ ingress:
   className: {{ .Namespace }}
 langfuse:
   nextauth:
-    url: http://langfuse-web.dev.svc.cluster.local:3000
+    url: http://langfuse.{{.Values.domain}}
     secret: llmstack
   telemetryEnabled: false
   additionalEnv:

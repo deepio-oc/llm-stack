@@ -1,0 +1,13 @@
+litellm_model_list:
+  - model_name: llama-3.1-8b-instruct
+    litellm_params:
+      model: openai/meta/llama-3.1-8b-instruct
+      api_base: "http://dkube-nim-llm-sts.nim:8000/v1"
+      api_key: sk-fake
+domain: demo1.vmware.dkube.ai
+imagePullSecrets:
+  - registry-secret
+openwebui:
+  image: env169-harbor.pse.lab/dkubetest/open-webui-gpu
+  tag: "latest"
+  vector_db: pgvector

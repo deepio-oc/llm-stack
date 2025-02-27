@@ -3,6 +3,7 @@ envVars:
     LANGFUSE_PUBLIC_KEY: {{.Values.langfuse.public_key}}
     LANGFUSE_SECRET_KEY: {{.Values.langfuse.secret_key}}
     LANGFUSE_HOST: langfuse-web:3000
+    STORE_MODEL_IN_DB: true
 image:
     pullPolicy: IfNotPresent
 migrationJob:
