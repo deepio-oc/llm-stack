@@ -23,6 +23,10 @@ ingress:
   host: openwebui.{{ .Values.domain }}
   enabled: true
   class: {{ .Namespace }}
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-body-size: "100g"
 {{- with .Values.imagePullSecrets }}
 imagePullSecrets:
 {{- toYaml . | nindent 2 }}
