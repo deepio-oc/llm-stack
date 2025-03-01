@@ -55,6 +55,22 @@ releases:
 - name: cert-manager
   chart: jetstack/cert-manager
   version: 1.17.1
+  wait: true
   values:
   - crds:
       enabled: true
+    extraArgs: ['--dns01-recursive-nameservers-only','--dns01-recursive-nameservers=8.8.8.8:53,1.1.1.1:53', '--controllers=*,-certificaterequests-approver']
+    deploymentAnnotations:
+      certmanager.k8s.io/disable-validation: "true"
+
+- name: certs
+  chart: ./certs
+  disableValidation: true
+  jsonPatches:
+  - target:
+      kind: Secret
+      name: cloudflare-api-token
+    patch:
+      - op: replace
+        path: "/stringData/api-token"
+        value: {{ requiredEnv "CF_API_TOKEN" }}

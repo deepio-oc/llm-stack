@@ -1,0 +1,4 @@
+resources:
+  - prod-issuer.yaml
+  - staging-issuer.yaml
+  - secret.yaml
