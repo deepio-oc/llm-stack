@@ -48,7 +48,6 @@ releases:
     - ingress
     provider: cloudflare
     domainFilters: ["dkube.ai"]
-    policy: sync
     cloudflare:
       apiToken: {{ requiredEnv "CF_API_TOKEN" }}
       proxied: false
