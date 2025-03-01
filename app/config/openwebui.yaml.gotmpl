@@ -1,5 +1,7 @@
 ollama:
   enabled: false
+tika:
+  enabled: {{ .Values.openwebui.tika }}
 openaiBaseApiUrl: "http://litellm:4000"
 persistence:
   enabled: true

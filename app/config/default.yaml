@@ -17,3 +17,4 @@ openwebui:
   tag: ""
   vector_db: chroma
   size: 2Gi
+  tika: false

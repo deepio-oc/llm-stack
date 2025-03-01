@@ -11,6 +11,7 @@ litellm_model_list:
     model_name: nvidia/nv-embedqa-e5-v5
 domain: demo1.vmware.dkube.ai
 openwebui:
-  tag: v0.5.16-cuda
+  tag: v0.5.18-cuda
   vector_db: pgvector
   size: 10Gi
+  tika: true
