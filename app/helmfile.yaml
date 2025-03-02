@@ -90,6 +90,21 @@ releases:
     values:
     - ./config/homepage.yaml.gotmpl
 
+  - name: cert
+    chart: cert
+    jsonPatches:
+    - target:
+        kind: Certificate
+        name: dkube-ai
+        namespace: {{ .Namespace }}
+      patch:
+        - op: replace
+          path: "/spec/dnsNames/0"
+          value: {{.Values.domain}}
+        - op: replace
+          path: "/spec/dnsNames/1"
+          value: "*.{{.Values.domain}}"
+          
   - name: nginx
     chart: ingress-nginx/ingress-nginx
     values:

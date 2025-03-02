@@ -31,9 +31,6 @@ ingress:
     tls:
     - hosts:
       - {{ .Values.domain }}
-      secretName: homepage-tls
-    annotations:
-      cert-manager.io/cluster-issuer: "letsencrypt-staging"
     hosts: 
     - host: {{ .Values.domain }}
       paths:

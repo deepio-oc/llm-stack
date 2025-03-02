@@ -7,4 +7,5 @@ controller:
     controllerValue: k8s.io/ingress-nginx-{{ .Namespace }}
   ingressClass: {{ .Namespace }}
   ingressClassByName: true
-  
+  extraArgs:
+    default-ssl-certificate: "{{ .Namespace }}/dkube-ai-tls"

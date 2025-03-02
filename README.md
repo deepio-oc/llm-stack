@@ -6,5 +6,5 @@
 
 ### Deploy LLM stack in kubernetes
 1. `export CF_API_TOKEN=<cloudflare_api_token>`
-2. `cd infra && helmfile apply`
+2. `cd infra && helmfile apply && helmfile apply`. Note the first `helmfile apply` may fail if CRDs are not yet installed.
 3. `cd apps && helmfile -n dev apply`
