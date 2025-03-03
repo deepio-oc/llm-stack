@@ -1,0 +1,6 @@
+prometheus: 
+  enabled: true
+grafana:
+  enabled: true
+cert-manager:
+  enabled: true

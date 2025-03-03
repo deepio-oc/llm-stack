@@ -1,4 +1,10 @@
 namespace: dkube
+
+environments:
+  default:
+    values:
+    - ./config/default.yaml
+
 repositories:
 - name: grafana
   url: https://grafana.github.io/helm-charts
@@ -17,20 +23,25 @@ releases:
 
 - chart: grafana/loki
   name: loki
-  values:
+  condition: grafana.enabled
+  values: 
   - config/loki.yaml
 - chart: grafana/promtail
   name: promtail
+  condition: grafana.enabled
   values:
   - config/loki.yaml
 - chart: grafana/tempo
   name: tempo
+  condition: grafana.enabled
 - chart: grafana/grafana
   name: grafana
+  condition: grafana.enabled
   values:
   - config/grafana.yaml
 - chart: prometheus-community/prometheus
   name: prometheus
+  condition: prometheus.enabled
   values:
     - kube-state-metrics:
         enabled: false
@@ -54,6 +65,7 @@ releases:
 - name: cert-manager
   chart: jetstack/cert-manager
   version: 1.17.1
+  condition: cert-manager.enabled
   wait: true
   values:
   - crds:
