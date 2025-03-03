@@ -3,22 +3,32 @@ config:
   services:
     - {{ .Namespace }}:
         - Open WebUI:
-            href: http://openwebui.{{.Values.domain}}/
+            href: https://openwebui.{{.Values.domain}}/
+            icon: https://openwebui.com/favicon.png
             description: Open WebUI is an extensible, self-hosted AI interface that adapts to your workflow, all while operating entirely offline
 
         - LiteLLM:
-            href: http://litellm.{{.Values.domain}}/ui
+            href: https://litellm.{{.Values.domain}}/ui
             description: LLM Gateway to provide AI model access.
-
+            icon: https://pbs.twimg.com/profile_images/1783589223406415872/3KMxGGrF_400x400.jpg
         - Langfuse:
-            href: http://langfuse.{{.Values.domain}}/
+            href: https://langfuse.{{.Values.domain}}/
             description: Traces, evals, prompt management and metrics to debug and improve your LLM application.
-  widgets: []
+            icon: https://langfuse.com/icon256.png
+        - pgAdmin4:
+            href: https://pgadmin.{{.Values.domain}}/
+            description: pgAdmin4 is a web based administration tool for PostgreSQL database
+            icon: https://artifacthub.io/image/61ef8ba4-4c21-438e-a0a2-e35628f1e193@2x
 
+  widgets: []
   kubernetes:
     mode: cluster
   settings:
-
+    theme: dark
+    layout:
+      Media:
+        style: rcocoluumow
+        columns: 4
 # The service account is necessary to allow discovery of other services
 serviceAccount:
   create: true

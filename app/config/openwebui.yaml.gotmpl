@@ -26,7 +26,7 @@ ingress:
   host: openwebui.{{ .Values.domain }}
   enabled: true
   class: {{ .Namespace }}
-  existingSecret: dkube-ai
+  existingSecret: dkube-ai-tls
   tls:
   - hosts:
     - {{ .Values.domain }}

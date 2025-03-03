@@ -1,0 +1,29 @@
+ingress:
+  enabled: true
+  ingressClassName: {{ .Namespace }}
+  tls:
+  - hosts:
+    - {{ .Values.domain }}
+
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-body-size: "100g"
+  hosts: 
+  - host: pgadmin.{{ .Values.domain }}
+    paths:
+      - path: /
+        pathType: ImplementationSpecific
+env:
+  email: admin@local.com
+  password: {{ .Values.postgres.db_password }}
+serverDefinitions:
+  enabled: true
+  servers:
+    DevServer:
+      Name: Local
+      Group: "Servers"
+      Port: 5432 
+      Username: {{ .Values.postgres.db_user }}
+      Host: "postgresql"
+      MaintenanceDB: "postgres"

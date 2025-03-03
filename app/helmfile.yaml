@@ -49,21 +49,8 @@ releases:
     namespace: {{ .Namespace }}
     condition: postgres.enabled
     values:
-    - pgadmin4:
-      env:
-        email: admin@local.com
-        password: {{ .Values.postgres.db_password }}
-      serverDefinitions:
-        enabled: true
-        servers:
-          DevServer:
-            Name: Local
-            Group: "Servers"
-            Port: 5432 
-            Username: {{ .Values.postgres.db_user }}
-            Host: "postgresql"
-            MaintenanceDB: "postgres"
-
+    - ./config/pgadmin4.yaml.gotmpl
+    
   - name: openwebui
     chart: openwebui/open-webui
     namespace: {{ .Namespace }}
@@ -104,7 +91,7 @@ releases:
         - op: replace
           path: "/spec/dnsNames/1"
           value: "*.{{.Values.domain}}"
-          
+
   - name: nginx
     chart: ingress-nginx/ingress-nginx
     values:
