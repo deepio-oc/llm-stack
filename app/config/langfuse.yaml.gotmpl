@@ -4,7 +4,12 @@ postgresql:
   deploy: false
 minio:
   deploy: false
+valkey:
+  global:
+    defaultStorageClass: {{.Values.storageClassName}}
 clickhouse:
+  global:
+    defaultStorageClass: {{.Values.storageClassName}}
   image:
     pullPolicy: IfNotPresent
   replicaCount: 1

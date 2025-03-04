@@ -34,6 +34,8 @@ releases:
     condition: postgres.enabled
     values:
       - fullNameOverride: "postgresql"
+        global:
+          defaultStorageClass: {{.Values.storageClassName}}
         auth:
           username: {{ .Values.postgres.db_user }}
           password: {{ .Values.postgres.db_password }}
@@ -50,7 +52,7 @@ releases:
     condition: postgres.enabled
     values:
     - ./config/pgadmin4.yaml.gotmpl
-    
+
   - name: openwebui
     chart: openwebui/open-webui
     namespace: {{ .Namespace }}

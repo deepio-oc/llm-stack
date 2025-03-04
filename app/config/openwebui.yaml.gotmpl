@@ -6,6 +6,7 @@ openaiBaseApiUrl: "http://litellm:4000"
 persistence:
   enabled: true
   size: {{.Values.openwebui.size}}
+  storageClass: {{.Values.storageClassName}}
 extraEnvVars:
   - name: DATABASE_URL
     value: {{ .Values.db_url }}/{{ .Namespace }}_openwebui
@@ -20,6 +21,8 @@ image:
   repository: {{.Values.openwebui.image}}
   tag: {{.Values.openwebui.tag}}
 pipelines:
+  persistence:
+    storageClass: {{.Values.storageClassName}}
   image:
     pullPolicy: IfNotPresent
 ingress:

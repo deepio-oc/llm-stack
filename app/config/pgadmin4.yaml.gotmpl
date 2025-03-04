@@ -1,3 +1,5 @@
+persistentVolume:
+  storageClass: {{.Values.storageClassName}}
 ingress:
   enabled: true
   ingressClassName: {{ .Namespace }}
