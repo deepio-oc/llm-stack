@@ -33,18 +33,7 @@ releases:
     namespace: {{ .Namespace }}
     condition: postgres.enabled
     values:
-      - fullNameOverride: "postgresql"
-        global:
-          defaultStorageClass: {{.Values.storageClassName}}
-        auth:
-          username: {{ .Values.postgres.db_user }}
-          password: {{ .Values.postgres.db_password }}
-        primary:
-          initdb:
-            scripts:
-              init.sql: |
-                CREATE DATABASE {{ .Namespace }}_openwebui;
-                CREATE DATABASE {{ .Namespace }}_phoneix;
+      - ./config/postgres.yaml.gotmpl
 
   - name: pgadmin
     chart: runix/pgadmin4

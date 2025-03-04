@@ -1,0 +1,15 @@
+fullNameOverride: "postgresql"
+
+global:
+    defaultStorageClass: {{.Values.storageClassName}}
+auth:
+    username: {{ .Values.postgres.db_user }}
+    password: {{ .Values.postgres.db_password }}
+primary:
+    initdb:
+        args: "--set huge_pages=off"
+        scripts:
+            init.sql: |
+                CREATE DATABASE {{ .Namespace }}_openwebui;
+    extendedConfiguration: |-
+        huge_pages = off
