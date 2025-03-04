@@ -37,13 +37,12 @@ async def fetch_recent_feedback(mins=10):
     
 async def main():
     try:
-        INTERVAL_IN_MINS = int(os.environ.get('INTERVAL_IN_MINS', INTERVAL_IN_MINS))
         if INTERVAL_IN_MINS < 1:
             raise ValueError
     except ValueError:
         print(f"INTERVAL_IN_MINS must be a valid integer greater than 0, got {INTERVAL_IN_MINS}")
         os.exit(1)
-    rows = await fetch_recent_feedback()
+    rows = await fetch_recent_feedback(mins=INTERVAL_IN_MINS)
     async def process_rows(rows):
         rowsDict = [dict(row) for row in rows]
         for row in rowsDict:
