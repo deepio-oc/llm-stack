@@ -20,15 +20,35 @@ config:
             description: pgAdmin4 is a web based administration tool for PostgreSQL database
             icon: https://artifacthub.io/image/61ef8ba4-4c21-438e-a0a2-e35628f1e193@2x
 
+    - Infrastructure:
+        - MinIO:
+            href: https://minio-console.{{.Values.domain}}/
+            icon: https://blog.alexellis.io/content/images/2017/01/minio_light_cir_sm-1.png
+            description: MinIO is a cloud-native object store built to run on any infrastructure
+
+        - Grafana:
+            href: https://grafana.{{.Values.domain}}
+            description: Grafana is a multi-platform open source analytics and interactive visualization web application.
+            icon: https://w7.pngwing.com/pngs/434/923/png-transparent-grafana-hd-logo-thumbnail.png
+
+        - Prometheus:
+            href: https://prometheus-server.{{.Values.domain}}/
+            description: An open-source monitoring system with a dimensional data model, flexible query language, efficient time series database and modern alerting approach.
+            icon: https://upload.wikimedia.org/wikipedia/commons/thumb/3/38/Prometheus_software_logo.svg/230px-Prometheus_software_logo.svg.png
+
   widgets: []
   kubernetes:
     mode: cluster
   settings:
+    useEqualHeights: true
     theme: dark
     layout:
-      Media:
-        style: rcocoluumow
-        columns: 4
+      {{ .Namespace }}:
+        style: column
+        columns: 3
+      Infrastructure:
+        style: row
+        columns: 3
 # The service account is necessary to allow discovery of other services
 serviceAccount:
   create: true

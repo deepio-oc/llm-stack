@@ -88,3 +88,21 @@ releases:
     values:
     - config/ingress-nginx.gotmpl
 
+  - name: grafana
+    chart: ./external-service
+    values:
+      - name: grafana
+        domain: {{.Values.domain}}
+        port: 80
+  - name: prometheus
+    chart: ./external-service
+    values:
+      - name: prometheus-server
+        domain: {{.Values.domain}}
+        port: 80
+  - name: minio
+    chart: ./external-service
+    values:
+      - name: minio-console
+        domain: {{.Values.domain}}
+        port: 9001
