@@ -11,7 +11,7 @@ extraEnvVars:
   - name: DATABASE_URL
     value: {{ .Values.db_url }}/{{ .Namespace }}_openwebui
   - name: OPENAI_API_KEYS
-    value: fake;{{ .Values.litellm_master_key }}
+    value: {{.Values.openwebui.pipeline_api_key}};{{ .Values.litellm_master_key }}
   - name: VECTOR_DB
     value: {{.Values.openwebui.vector_db}}
   - name: PGVECTOR_DB_URL
@@ -25,6 +25,10 @@ pipelines:
     storageClass: {{.Values.storageClassName}}
   image:
     pullPolicy: IfNotPresent
+  extraEnvVars:
+    - name: PIPELINES_API_KEY
+      value: {{.Values.openwebui.pipeline_api_key}}
+
 ingress:
   host: openwebui.{{ .Values.domain }}
   enabled: true

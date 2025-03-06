@@ -18,4 +18,5 @@ openwebui:
   vector_db: chroma
   size: 2Gi
   tika: false
+  pipeline_api_key: fake
 storageClassName: ""
