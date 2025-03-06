@@ -10,7 +10,7 @@ extraEnvVars:
   - name: DATABASE_URL
     value: {{ .Values.db_url }}/{{ .Namespace }}_openwebui
   - name: OPENAI_API_KEYS
-    value: fake;{{ .Values.litellm_master_key }}
+    value: 0p3n-w3bu!;{{ .Values.litellm_master_key }}
   - name: VECTOR_DB
     value: {{.Values.openwebui.vector_db}}
   - name: PGVECTOR_DB_URL
