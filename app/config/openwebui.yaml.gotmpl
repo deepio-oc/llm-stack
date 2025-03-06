@@ -16,6 +16,9 @@ extraEnvVars:
     value: {{.Values.openwebui.vector_db}}
   - name: PGVECTOR_DB_URL
     value: {{ env "PGVECTOR_DB_URL" }}
+{{- if .Values.openwebui.extraEnvVars }}
+{{ toYaml .Values.openwebui.extraEnvVars | nindent 2 }}
+{{- end }}
 image:
   pullPolicy: IfNotPresent
   repository: {{.Values.openwebui.image}}
