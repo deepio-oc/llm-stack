@@ -26,6 +26,12 @@ repositories:
   - name: runix
     url: https://helm.runix.net
 
+  - name: dex
+    url: https://charts.dexidp.io
+
+  - name: oauth2-proxy
+    url: https://oauth2-proxy.github.io/manifests
+
 releases:
   - name: postgresql
     chart: oci://registry-1.docker.io/bitnamicharts/postgresql
@@ -106,3 +112,13 @@ releases:
       - name: minio-console
         domain: {{.Values.domain}}
         port: 9001
+
+  - name: dex
+    chart: dex/dex
+    values:
+    - ./config/dex.yaml.gotmpl
+
+  - name: oauth2-proxy
+    chart: oauth2-proxy/oauth2-proxy
+    values:
+    - ./config/oauth2-proxy.yaml.gotmpl

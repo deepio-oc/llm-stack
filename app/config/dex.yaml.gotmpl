@@ -1,0 +1,52 @@
+# Configures the ingress for Dex
+ingress:
+  enabled: true
+  className: {{ .Namespace }}
+  tls:
+  - hosts:
+    - {{ .Values.domain }}
+  hosts:
+    - host: {{.Values.domain}}
+      paths:
+        - path: /dex
+          pathType: Prefix
+
+# Configures the Dex instance          
+config:
+  issuer: https://{{.Values.domain}}/dex
+  storage:
+    type: kubernetes
+    config:
+      inCluster: true
+  web:
+    http: 0.0.0.0:8080
+  oauth2:
+    responseTypes: [ "code" ]
+    skipApprovalScreen: true
+    alwaysShowLoginScreen: false
+  # Configures the connections for Dex
+  connectors:
+    - type: saml
+      id: saml
+      name: "Auth0-DKube"
+      config:
+        entityIssuer: https://{{.Values.domain}}/dex/callback
+        ssoURL: https://{{.Values.auth.domain}}/samlp/{{.Values.auth.client_id}}
+        redirectURI: https://{{.Values.domain}}/dex/callback
+        usernameAttr: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name
+        emailAttr: http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress
+        groupsAttr: http://schemas.xmlsoap.org/claims/Group
+        caData:{{ toYaml .Values.auth.certificate | nindent 10}}
+
+
+  staticClients:
+    - id: oauth2-proxy
+      secret: proxy
+      name: "Oauth2 Proxy Static Client"
+      redirectURIs:
+        - https://{{.Values.domain}}/oauth2/callback
+    - id: langfuse
+      secret: langfuse
+      name: "Langfuse Oauth Client"
+      redirectURIs:
+        - https://langfuse.{{.Values.domain}}/api/auth/callback/custom

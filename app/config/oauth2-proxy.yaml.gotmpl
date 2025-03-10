@@ -1,0 +1,39 @@
+
+config:
+    clientID: oauth2-proxy
+    clientSecret: proxy
+    cookieSecret: TOw1sHArkcOYi4Ler85-ogL-ZYmkklc2AahcuBPVT1s=
+
+extraArgs: 
+  provider: oidc
+  cookie-secure: false
+  cookie-domain: "{{.Values.domain}}"
+  cookie-samesite: lax
+  cookie-refresh: 24h
+  approval-prompt: ""
+  cookie-expire: 720h
+  set-xauthrequest: true
+  reverse-proxy: true
+  pass-user-headers: true
+  pass-host-header: true # pass the request Host Header to upstream
+  scope: "openid profile email"
+  upstream: static://200
+  skip-oidc-discovery: false
+  oidc-issuer-url: https://{{.Values.domain}}/dex
+  standard-logging: true
+  auth-logging: true
+  request-logging: true
+
+extraEnv: []
+
+ingress:
+  enabled: true
+  className: {{.Namespace}}
+  path: /oauth2
+  pathType: ImplementationSpecific
+  # Used to create an Ingress record.
+  hosts:
+    - {{.Values.domain}}
+  tls:
+    - hosts:
+      - {{.Values.domain}}
