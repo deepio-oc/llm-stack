@@ -50,7 +50,18 @@ langfuse:
       value: openwebui@local.com
     - name: LANGFUSE_INIT_USER_PASSWORD
       value: "vI2%mAz~8nsFYgm"
-
+    - name: AUTH_DOMAINS_WITH_SSO_ENFORCEMENT
+      value: {{.Values.domain}}
+    - name: AUTH_CUSTOM_CLIENT_ID
+      value: langfuse
+    - name: AUTH_CUSTOM_CLIENT_SECRET
+      value: langfuse
+    - name: AUTH_CUSTOM_ISSUER
+      value: https://{{.Values.domain}}/dex
+    - name: AUTH_CUSTOM_NAME
+      value: {{.Values.auth.name}}
+    - name: AUTH_CUSTOM_CHECKS
+      value: state
     - name: DATABASE_URL
       value: {{ .Values.db_url }}/{{ .Namespace }}_langfuse
     # REDIS
