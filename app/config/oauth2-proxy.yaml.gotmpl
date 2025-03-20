@@ -1,7 +1,7 @@
 
 config:
-    clientID: oauth2-proxy
-    clientSecret: proxy
+    clientID: oauth2
+    clientSecret: oauth2
     cookieSecret: TOw1sHArkcOYi4Ler85-ogL-ZYmkklc2AahcuBPVT1s=
 
 extraArgs: 
@@ -16,7 +16,7 @@ extraArgs:
   reverse-proxy: true
   pass-user-headers: true
   pass-host-header: true # pass the request Host Header to upstream
-  scope: "openid profile email"
+  scope: "openid profile email groups"
   upstream: static://200
   skip-oidc-discovery: false
   oidc-issuer-url: https://{{.Values.domain}}/dex

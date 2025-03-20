@@ -53,9 +53,9 @@ langfuse:
     - name: AUTH_DOMAINS_WITH_SSO_ENFORCEMENT
       value: {{.Values.domain}}
     - name: AUTH_CUSTOM_CLIENT_ID
-      value: langfuse
+      value: oauth2
     - name: AUTH_CUSTOM_CLIENT_SECRET
-      value: langfuse
+      value: oauth2
     - name: AUTH_CUSTOM_ISSUER
       value: https://{{.Values.domain}}/dex
     - name: AUTH_CUSTOM_NAME

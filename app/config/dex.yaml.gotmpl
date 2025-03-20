@@ -40,14 +40,11 @@ config:
 
 
   staticClients:
-    - id: oauth2-proxy
-      secret: proxy
-      name: "Oauth2 Proxy Static Client"
+    - id: oauth2
+      secret: oauth2
+      name: "Oauth2 Static Client"
       redirectURIs:
         - https://{{.Values.domain}}/oauth2/callback
-    - id: langfuse
-      secret: langfuse
-      name: "Langfuse Oauth Client"
-      redirectURIs:
         - https://langfuse.{{.Values.domain}}/api/auth/callback/custom
         - http://langfuse.{{.Values.domain}}/api/auth/callback/custom
+        - https://openwebui.demo1.internal.dkube.ai/oauth/oidc/callback

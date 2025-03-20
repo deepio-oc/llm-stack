@@ -73,3 +73,6 @@ ingress:
           pathType: ImplementationSpecific
     enabled: true
     ingressClassName: {{ .Namespace }}
+env:
+  - name: HOMEPAGE_ALLOWED_HOSTS
+    value: {{ .Values.domain }}

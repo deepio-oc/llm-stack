@@ -17,11 +17,34 @@ extraEnvVars:
   - name: PGVECTOR_DB_URL
     value: {{ env "PGVECTOR_DB_URL" }}
   - name: ENABLE_SIGNUP
+    value: "false"
+  - name: ENABLE_OAUTH_SIGNUP
     value: "true"
-  - name: WEBUI_AUTH
+  - name: ENABLE_LOGIN_FORM
+    value: "false"
+  - name: OAUTH_CLIENT_ID
+    value: oauth2
+  - name: OAUTH_CLIENT_SECRET
+    value: oauth2
+  - name: OPENID_PROVIDER_URL
+    value: https://{{ .Values.domain }}/dex/.well-known/openid-configuration
+  - name: OAUTH_PROVIDER_NAME
+    value: {{.Values.auth.name}}
+  - name: ENABLE_OAUTH_GROUP_MANAGEMENT
     value: "true"
-  - name: WEBUI_AUTH_TRUSTED_EMAIL_HEADER
-    value: X-Auth-Request-Email
+  - name: OAUTH_GROUP_CLAIM
+    value: groups
+  - name: OAUTH_SCOPES
+    value: "openid email profile groups"
+  - name: USER_PERMISSIONS_WORKSPACE_MODELS_ACCESS
+    value: "true"
+  - name: USER_PERMISSIONS_WORKSPACE_KNOWLEDGE_ACCESS
+    value: "true"
+  - name: USER_PERMISSIONS_WORKSPACE_PROMPTS_ACCESS
+    value: "true"
+  - name: USER_PERMISSIONS_WORKSPACE_TOOLS_ACCESS
+    value: "true"
+
 image:
   pullPolicy: IfNotPresent
   repository: {{.Values.openwebui.image}}
@@ -48,9 +71,6 @@ ingress:
     nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
     nginx.ingress.kubernetes.io/proxy-body-size: "100g"
-    nginx.ingress.kubernetes.io/auth-url: "https://{{ .Values.domain }}/oauth2/auth"
-    nginx.ingress.kubernetes.io/auth-signin: "https://{{ .Values.domain }}/oauth2/start?rd=$escaped_request_uri"
-    nginx.ingress.kubernetes.io/auth-response-headers: Authorization, X-Auth-Request-Email
 {{- with .Values.imagePullSecrets }}
 imagePullSecrets:
 {{- toYaml . | nindent 2 }}
