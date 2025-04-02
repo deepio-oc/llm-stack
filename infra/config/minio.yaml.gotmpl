@@ -19,3 +19,6 @@ resources:
     memory: 1Gi
 persistence:
   size: 5Gi
+{{if .Values.storageClass}}
+  storageClass: {{.Values.storageClass}}
+{{end}}

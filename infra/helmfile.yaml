@@ -19,7 +19,7 @@ releases:
 - chart: minio/minio
   name: minio
   values:
-    - config/minio.yaml
+    - config/minio.yaml.gotmpl
 
 - chart: grafana/loki
   name: loki

@@ -1,6 +1,7 @@
 prometheus: 
-  enabled: true
+  enabled: false
 grafana:
-  enabled: true
+  enabled: false
 cert-manager:
   enabled: true
+storageClass: "gp2"
