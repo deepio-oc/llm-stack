@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: python-script-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: python-script-cron
+spec:
+  schedule: "*/10 * * * *"  # Runs every 10 minutes
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: python-script
+              image: python:3.10-slim
+              env:
+                - name: DB_URL
+                  value: postgresql://postgres:postgrespassword@postgresql/dev_openwebui
+                - name: INTERVAL_IN_MINS
+                  value: "10"
+                - name: LANGFUSE_PRIVATE_KEY
+                  value: ""
+                - name: LANGFUSE_PUBLIC_KEY
+                  value: ""
+                - name: LANGFUSE_BASE_URL
+                  value: "http://langfuse-web:3000"
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  apt-get update && apt-get install -y git &&
+                  if [ ! -d "/app/.git" ]; then
+                    git clone https://github.com/deepio-oc/llm-stack.git /app
+                  else
+                    cd /app && git pull origin main
+                  fi
+                  cd /app/utils/feedback_sync_owui_to_langfuse &&
+                  pip install -r requirements.txt &&
+                  python sync_script.py
+              volumeMounts:
+                - name: python-script
+                  mountPath: /app
+          restartPolicy: Never
+          volumes:
+            - name: python-script
+              persistentVolumeClaim:
+                claimName: python-script-pvc
